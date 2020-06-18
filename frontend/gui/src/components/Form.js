@@ -5,7 +5,7 @@ import axios from 'axios';
 
 class CustomForm extends React.Component {
 
-    handleFormSubmit(event, requestType, articleID) {
+    async handleFormSubmit(event, requestType, articleID) {
         event.preventDefault();
 
         const elements = event.target.elements;
@@ -15,14 +15,14 @@ class CustomForm extends React.Component {
 
         switch (requestType) {
             case 'post':
-                axios.post('http://127.0.0.1:8000/api/', {
+                await axios.post('http://127.0.0.1:8000/api/', {
                     title: title,
                     description: description,
                     content: content
                 }).then(res => console.log(res)).catch(err => console.log(err));
                 break;
             case 'put':
-                axios.put(`http://127.0.0.1:8000/api/${articleID}`, {
+                await axios.put(`http://127.0.0.1:8000/api/${articleID}`, {
                     title: title,
                     description: description,
                     content: content

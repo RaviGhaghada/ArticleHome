@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-import { Card } from 'antd';
+import { Card, Button } from 'antd';
 import CustomForm from './../components/Form'
 
 class ArticleDetail extends React.Component {
@@ -22,7 +22,16 @@ class ArticleDetail extends React.Component {
                 this.setState({
                     article: res.data
                 })
-            })
+            });
+    }
+
+    handleDelete(event) {
+        event.preventDefault();
+
+        const articleID = this.state.article.id;
+        axios.delete(`http://127.0.0.1:8000/api/${articleID}`)
+            .then(res => console.log(res))
+            .catch(error => console.log(error));
     }
     render() {
         return (
@@ -33,6 +42,9 @@ class ArticleDetail extends React.Component {
                 <hr />
                 <h2>Edit article</h2>
                 <CustomForm requestType="put" articleID={this.state.article.id} btnText="Update" />
+                <form onSubmit={this.handleDelete.bind(this)}>
+                    <Button type='danger' htmlType="submit">Delete</Button>
+                </form>
             </div>
         );
     }
