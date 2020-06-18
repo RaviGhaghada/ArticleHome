@@ -3,20 +3,24 @@ import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom';
 import { Form, Input, Button, Spin, message } from 'antd';
 
+import * as actions from '../store/actions/auth';
 
 class Login extends React.Component {
 
+    handleSubmit(event) {
+        event.preventDefault();
+        const elements = event.target.elements;
+        const username = elements.username.value;
+        const password = elements.password.value;
+        this.props.onAuth(username, password)
+    }
     render() {
 
-        let errorMessage = null;
         if (this.props.error) {
-            errorMessage = (
-                <p>{this.props.error.message}</p>
-            );
+            message.error(this.props.error.message);
         }
         return (
             <div>
-                {errorMessage}
                 {
                     this.props.loading ?
 
@@ -24,8 +28,9 @@ class Login extends React.Component {
 
                         :
 
-                        <Form initialValues={{ remember: true }}>
-                            <Form.Item
+                        <Form initialValues={{ remember: true }} layout='vertical' onSubmitCapture={this.handleSubmit.bind(this)}>
+                            <Form.Item style={{ marginLeft: 10 }}
+
                                 label="Username"
                                 rules={[
                                     {
@@ -34,10 +39,10 @@ class Login extends React.Component {
                                     },
                                 ]}
                             >
-                                <Input />
+                                <Input placeholder='Username' name='username' />
                             </Form.Item>
 
-                            <Form.Item
+                            <Form.Item style={{ marginLeft: 10 }}
                                 label="Password"
                                 rules={[
                                     {
@@ -46,14 +51,14 @@ class Login extends React.Component {
                                     },
                                 ]}
                             >
-                                <Input.Password />
+                                <Input.Password placeholder='Password' name='password' />
                             </Form.Item>
 
-                            <Form.Item>
+                            <Form.Item style={{ marginLeft: 15 }}>
                                 <Button type="primary" htmlType="submit">
                                     Login
                     </Button>
-                    Or
+                    &nbsp;Or&nbsp;
                     <NavLink to='/signup'>
                                     Signup
                     </NavLink>
@@ -72,4 +77,9 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(Login);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onAuth: (username, password) => dispatch(actions.authLogin(username, password))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
