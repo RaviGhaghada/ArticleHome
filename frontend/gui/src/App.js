@@ -6,8 +6,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 import BaseRouter from './routes';
 
-import CustomLayout from './containers/Layout'
-import ArticleList from './containers/ArticleListView'
+import CustomLayout from './containers/Layout';
 
 function App() {
   return (
