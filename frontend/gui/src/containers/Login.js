@@ -13,9 +13,12 @@ class Login extends React.Component {
         const username = elements.username.value;
         const password = elements.password.value;
         this.props.onAuth(username, password)
+        this.props.history.push('/');
     }
     render() {
-
+        if (this.props.token) {
+            this.props.history.push('/');
+        }
         if (this.props.error) {
             message.error(this.props.error.message);
         }
@@ -73,7 +76,8 @@ class Login extends React.Component {
 const mapStateToProps = (state) => {
     return {
         loading: state.loading,
-        error: state.error
+        error: state.error,
+        token: state.token
     }
 }
 

@@ -36,6 +36,9 @@ class RegistrationForm extends React.Component {
 
 
     render() {
+        if (this.props.token) {
+            this.props.history.push('/');
+        }
         return (
             <Form onSubmit={this.handleSubmit}>
 
@@ -96,7 +99,8 @@ class RegistrationForm extends React.Component {
 const mapStateToProps = (state) => {
     return {
         loading: state.loading,
-        error: state.error
+        error: state.error,
+        token: state.token
     }
 }
 
