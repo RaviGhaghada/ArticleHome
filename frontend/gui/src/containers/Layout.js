@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout, Menu, Breadcrumb } from 'antd';
 
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import * as actions from '../store/actions/auth';
@@ -11,6 +11,10 @@ const { Header, Content, Footer } = Layout;
 
 class CustomLayout extends React.Component {
 
+    constructor(props) {
+        super(props);
+
+    }
     render() {
 
         return (
@@ -55,4 +59,4 @@ const mapDispatchToProps = (dispatch) => {
         logout: () => dispatch(actions.logout())
     }
 }
-export default connect(null, mapDispatchToProps)(CustomLayout);
+export default withRouter(connect(null, mapDispatchToProps)(CustomLayout));
