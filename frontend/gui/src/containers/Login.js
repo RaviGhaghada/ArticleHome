@@ -66,7 +66,8 @@ class NormalLoginForm extends React.Component {
 const mapStateToProps = (state) => {
     return {
         loading: state.loading,
-        error: state.error
+        error: state.error,
+        state: state.token,
     }
 }
 
