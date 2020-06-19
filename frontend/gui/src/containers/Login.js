@@ -5,25 +5,30 @@ import { Form, Input, Button, Spin, message } from 'antd';
 
 import * as actions from '../store/actions/auth';
 
-class Login extends React.Component {
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
 
-    handleSubmit(event) {
-        event.preventDefault();
-        const elements = event.target.elements;
-        const username = elements.username.value;
-        const password = elements.password.value;
-        this.props.onAuth(username, password)
+const FormItem = Form.Item;
+class NormalLoginForm extends React.Component {
+
+    handleFinish(values) {
+        this.props.onAuth(values.userName, values.password);
         this.props.history.push('/');
     }
+
+
     render() {
-        if (this.props.token) {
-            this.props.history.push('/');
-        }
+        let errorMessage = null;
         if (this.props.error) {
-            message.error(this.props.error.message);
+            errorMessage = (
+                <p>{this.props.error.message}</p>
+            );
+        }
+        else if (this.props.token) {
+            this.props.history.push('/');
         }
         return (
             <div>
+                {errorMessage}
                 {
                     this.props.loading ?
 
@@ -31,41 +36,25 @@ class Login extends React.Component {
 
                         :
 
-                        <Form initialValues={{ remember: true }} layout='vertical' onSubmitCapture={this.handleSubmit.bind(this)}>
-                            <Form.Item style={{ marginLeft: 10 }}
+                        <Form onFinish={this.handleFinish.bind(this)} className="login-form">
+                            <FormItem name='userName' rules={[{ required: true, message: 'Please input your username!' }]}>
+                                <Input prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+                            </FormItem>
 
-                                label="Username"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input your username!',
-                                    },
-                                ]}
-                            >
-                                <Input placeholder='Username' name='username' />
-                            </Form.Item>
+                            <FormItem name="password" rules={[{ required: true, message: 'Please input your Password!' }]}>
+                                <Input prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+                            </FormItem>
 
-                            <Form.Item style={{ marginLeft: 10 }}
-                                label="Password"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input your password!',
-                                    },
-                                ]}
-                            >
-                                <Input.Password placeholder='Password' name='password' />
-                            </Form.Item>
-
-                            <Form.Item style={{ marginLeft: 15 }}>
-                                <Button type="primary" htmlType="submit">
+                            <FormItem>
+                                <Button type="primary" htmlType="submit" style={{ marginRight: '10px' }}>
                                     Login
-                    </Button>
-                    &nbsp;Or&nbsp;
-                    <NavLink to='/signup'>
-                                    Signup
-                    </NavLink>
-                            </Form.Item>
+                      </Button>
+                      Or
+                      <NavLink
+                                    style={{ marginRight: '10px' }}
+                                    to='/signup/'> signup
+                      </NavLink>
+                            </FormItem>
                         </Form>
                 }
             </div>
@@ -73,17 +62,18 @@ class Login extends React.Component {
     }
 }
 
+
 const mapStateToProps = (state) => {
     return {
         loading: state.loading,
-        error: state.error,
-        token: state.token
+        error: state.error
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
     return {
         onAuth: (username, password) => dispatch(actions.authLogin(username, password))
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+
+export default connect(mapStateToProps, mapDispatchToProps)(NormalLoginForm);

@@ -12,13 +12,9 @@ class RegistrationForm extends React.Component {
         confirmDirty: false,
     };
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-        this.props.form.validateFieldsAndScroll((err, values) => {
-            if (!err) {
-                console.log(values)
-            }
-        });
+    handleFinish(values) {
+        this.props.onAuth(values.username, values.email, values.password, values.confirm);
+        this.props.history.push('/');
     }
 
     handleConfirmBlur = (e) => {
@@ -40,7 +36,7 @@ class RegistrationForm extends React.Component {
             this.props.history.push('/');
         }
         return (
-            <Form onSubmit={this.handleSubmit}>
+            <Form onFinish={this.handleFinish.bind(this)}>
 
                 <FormItem name="username" label="Username" rules={[{ required: true, message: 'Please input your Username!' }]}>
                     <Input prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
