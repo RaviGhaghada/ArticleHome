@@ -39,15 +39,13 @@ class ArticleDetail extends React.Component {
             }
             console.log(axios.defaults.headers);
             axios.post(`http://127.0.0.1:8000/api/${articleID}/like/`);
-            //            this.props.history.push('/');
-            //          this.forceUpdate();
+            this.props.history.push('/');
+            this.forceUpdate();
         }
 
     }
     render() {
-        // if (this.props.token == null) {
-        //     return <Redirect to="/login" />
-        // }
+        console.log(this.state.article);
         return (
             <div>
                 <Card title={this.state.article.title}>
