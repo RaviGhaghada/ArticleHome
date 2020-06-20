@@ -37,9 +37,10 @@ class ArticleDetail extends React.Component {
                 "Content-Type": "application/json",
                 "Authorization": this.props.token
             }
-            axios.delete(`http://127.0.0.1:8000/api/${articleID}/`);
-            this.props.history.push('/');
-            this.forceUpdate();
+            console.log(axios.defaults.headers);
+            axios.post(`http://127.0.0.1:8000/api/${articleID}/like/`);
+            //            this.props.history.push('/');
+            //          this.forceUpdate();
         }
 
     }
