@@ -29,7 +29,7 @@ class ArticleDetail extends React.Component {
         event.preventDefault();
 
         const articleID = this.state.article.id;
-        axios.delete(`http://127.0.0.1:8000/api/${articleID}`)
+        axios.delete(`http://127.0.0.1:8000/api/${articleID}/`)
             .then(res => console.log(res))
             .catch(error => console.log(error));
     }
