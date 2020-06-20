@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -15,11 +15,6 @@ class CustomForm extends React.Component {
         const content = elements.content.value;
 
         if (this.props.token !== null) {
-            axios.defaults.headers = {
-                "Content-Type": "application/json",
-                "Authorization": this.props.token,
-            }
-
             switch (requestType) {
                 case 'post':
                     await axios.post('http://127.0.0.1:8000/api/', {
@@ -36,6 +31,10 @@ class CustomForm extends React.Component {
                     }).then(res => console.log(res)).catch(err => console.log(err));
                     break;
             }
+        }
+        else {
+            message.destroy()
+            message.error("Not logged in");
         }
 
     }

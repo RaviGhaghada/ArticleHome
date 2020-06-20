@@ -1,9 +1,10 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework import permissions
 from articles.models import Article
 from .serializers import ArticleSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import action
+
 
 class ArticleViewSet(viewsets.ModelViewSet):
     """
@@ -12,20 +13,41 @@ class ArticleViewSet(viewsets.ModelViewSet):
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()
 
-    # def get_permissions(self):
-    #     """
-    #     Instantiates and returns the list of permissions that this view requires.
-    #     """
-    #     if self.action == 'list' or self.action == 'retrieve':
-    #         permission_classes = [AllowAny]
-    #     else:
-    #         permission_classes = [IsAuthenticated]
-    #     return [permission() for permission in permission_classes]
+    def get_permissions(self):
+        """
+        Instantiates and returns the list of permissions that this view requires.
+        """
+        if self.action == 'list' or self.action == 'retrieve':
+            permission_classes = [permissions.AllowAny]
+        else:
+            permission_classes = [permissions.IsAuthenticated]
+        return [permission() for permission in permission_classes]
     
-    # @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
-    # def like(self, request, pk=None):
-    #     article = self.get_object()
-    #     logged_in_user = request
-    #     print("SAY WHAT?")
-    #     print(logged_in_user.user.id)
-    #     return Response({'status': 'password set'})
+
+    @action(detail=True, methods=['post'])
+    def togglelike(self, request, pk=None):
+        """
+        Toggle whether the user likes the article or not
+        """
+        article = self.get_object()
+        likes = article.likes
+        user = request.user
+
+        if likes.filter(id=user.id).exists():
+            likes.remove(user)
+            return Response({'status': 'Success. Unliked article.'})
+        else:
+            likes.add(user)
+            return Response({'status': 'Success. Liked article.'})
+
+
+    @action(detail=True, methods=['get'])
+    def liked(self, request, pk=None):
+        """
+        Returns True if the user likes this article, else False
+        """
+        article = self.get_object()
+        likes = article.likes
+        user = request.user
+        result = likes.filter(id=user.id).exists()
+        return Response(result);

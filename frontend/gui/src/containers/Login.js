@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { NavLink, Redirect } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { Form, Input, Button, Spin, message } from 'antd';
 
 import * as actions from '../store/actions/auth';

@@ -5,6 +5,7 @@ import * as serviceWorker from './serviceWorker';
 import { createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import axios from 'axios';
 
 
 import reducer from './store/reducers/auth';
@@ -13,11 +14,19 @@ const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(reducer, composeEnhances(applyMiddleware(thunk)));
 
+
+
 const app = (
   <Provider store={store}>
     <App />
   </Provider>
 )
+
+axios.interceptors.request.use(function (config) {
+  const token = store.getState().token;
+  config.headers.Authorization = "Token " + token;
+  return config;
+})
 
 ReactDOM.render(app, document.getElementById('root'));
 

@@ -3,7 +3,6 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import Articles from './../components/Article'
 import CustomForm from './../components/Form'
-import { Redirect } from 'react-router-dom';
 
 const listData = [];
 for (let i = 0; i < 23; i++) {
