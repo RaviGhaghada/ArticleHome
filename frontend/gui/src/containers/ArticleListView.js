@@ -1,8 +1,9 @@
 import React from 'react';
 import axios from 'axios';
-
+import { connect } from 'react-redux';
 import Articles from './../components/Article'
 import CustomForm from './../components/Form'
+import { Redirect } from 'react-router-dom';
 
 const listData = [];
 for (let i = 0; i < 23; i++) {
@@ -27,14 +28,15 @@ class ArticleList extends React.Component {
         }
     }
 
-    componentDidMount() {
+    componentWillMount() {
         axios.get('http://127.0.0.1:8000/api/')
             .then(res => {
                 this.setState({
                     articles: res.data
                 })
-            })
+            });
     }
+
     render() {
         return (
             <div>
@@ -48,4 +50,10 @@ class ArticleList extends React.Component {
     }
 }
 
-export default ArticleList;
+
+const mapStateToProps = state => {
+    return {
+        token: state.token
+    }
+}
+export default connect(mapStateToProps)(ArticleList);

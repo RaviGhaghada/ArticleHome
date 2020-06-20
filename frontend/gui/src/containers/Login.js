@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 import { Form, Input, Button, Spin, message } from 'antd';
 
 import * as actions from '../store/actions/auth';
@@ -12,7 +12,17 @@ class NormalLoginForm extends React.Component {
 
     handleFinish(values) {
         this.props.onAuth(values.userName, values.password);
-        this.props.history.push('/');
+    }
+
+    componentWillReceiveProps(newProps) {
+        if (this.props.newProps) {
+            this.props.history.push('/');
+        }
+    }
+    componentDidUpdate() {
+        if (this.props.token) {
+            this.props.history.push('/');
+        }
     }
 
 
@@ -22,9 +32,6 @@ class NormalLoginForm extends React.Component {
             errorMessage = (
                 <p>{this.props.error.message}</p>
             );
-        }
-        else if (this.props.token) {
-            this.props.history.push('/');
         }
         return (
             <div>
@@ -67,7 +74,8 @@ const mapStateToProps = (state) => {
     return {
         loading: state.loading,
         error: state.error,
-        state: state.token,
+        token: state.token,
+
     }
 }
 

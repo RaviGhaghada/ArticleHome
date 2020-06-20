@@ -1,7 +1,9 @@
 import React from 'react';
 import axios from 'axios';
-
+import { connect } from 'react-redux';
 import { Card, Button } from 'antd';
+import { Redirect } from 'react-router-dom';
+
 import CustomForm from './../components/Form'
 
 class ArticleDetail extends React.Component {
@@ -14,10 +16,9 @@ class ArticleDetail extends React.Component {
         }
     }
 
-    componentDidMount() {
-        // see: src/routes.js
+    componentWillReceiveProps(newProps) {
         const articleID = this.props.match.params.articleID;
-        axios.get(`http://127.0.0.1:8000/api/${articleID}`)
+        axios.get(`http://127.0.0.1:8000/api/${articleID}/`)
             .then(res => {
                 this.setState({
                     article: res.data
@@ -25,15 +26,27 @@ class ArticleDetail extends React.Component {
             });
     }
 
+
     handleDelete(event) {
+
         event.preventDefault();
 
-        const articleID = this.state.article.id;
-        axios.delete(`http://127.0.0.1:8000/api/${articleID}/`)
-            .then(res => console.log(res))
-            .catch(error => console.log(error));
+        if (this.props.token !== null) {
+            const articleID = this.state.article.id;
+            axios.defaults.headers = {
+                "Content-Type": "application/json",
+                "Authorization": this.props.token
+            }
+            axios.delete(`http://127.0.0.1:8000/api/${articleID}/`);
+            this.props.history.push('/');
+            this.forceUpdate();
+        }
+
     }
     render() {
+        // if (this.props.token == null) {
+        //     return <Redirect to="/login" />
+        // }
         return (
             <div>
                 <Card title={this.state.article.title}>
@@ -50,4 +63,9 @@ class ArticleDetail extends React.Component {
     }
 }
 
-export default ArticleDetail;
+const mapStateToProps = state => {
+    return {
+        token: state.token
+    }
+}
+export default connect(mapStateToProps)(ArticleDetail);
