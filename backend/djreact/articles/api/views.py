@@ -17,7 +17,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
         """
         Instantiates and returns the list of permissions that this view requires.
         """
-        if self.action == 'list' or self.action == 'retrieve':
+        if self.action in ['list', 'retrieve', 'likes']:
             permission_classes = [permissions.AllowAny]
         else:
             permission_classes = [permissions.IsAuthenticated]
@@ -51,3 +51,11 @@ class ArticleViewSet(viewsets.ModelViewSet):
         user = request.user
         result = likes.filter(id=user.id).exists()
         return Response(result);
+    
+    @action(detail=True, methods=['get'])
+    def likes(self, request, pk=None):
+        """
+        Returns the number of people who liked this post
+        """
+        article = self.get_object()
+        return Response(article.likes.count())
