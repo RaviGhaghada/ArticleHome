@@ -44,15 +44,14 @@ class LikeButton extends React.Component {
 
         }
     }
-
     componentDidMount() {
         if (this.tokenValue != this.props.token) {
             this.tokenValue = this.props.token;
             this.getLikeDetail(this.props);
         }
     }
-    componentDidUpdate() {
-        if (this.tokenValue != this.props.token) {
+    componentDidUpdate(nextProps, nextState) {
+        if (this.props != nextProps) {
             this.tokenValue = this.props.token;
             this.getLikeDetail(this.props);
         }
