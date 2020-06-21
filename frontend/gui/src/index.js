@@ -24,9 +24,11 @@ const app = (
 
 axios.interceptors.request.use(function (config) {
   const token = store.getState().token;
-  config.headers.Authorization = "Token " + token;
+  if (token != null) {
+    config.headers.Authorization = "Token " + token;
+  }
   return config;
-})
+});
 
 ReactDOM.render(app, document.getElementById('root'));
 
