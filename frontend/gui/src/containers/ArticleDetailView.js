@@ -21,7 +21,7 @@ class ArticleDetail extends React.Component {
 
     componentWillMount() {
         const articleID = this.props.match.params.articleID;
-        axios.get(`http://127.0.0.1:8000/api/${articleID}/`)
+        axios.get(`http://${process.env.REACT_APP_API_HOST}/api/${articleID}/`)
             .then(res => {
                 this.setState({
                     article: res.data
@@ -36,7 +36,7 @@ class ArticleDetail extends React.Component {
 
         if (this.props.token !== null) {
             const articleID = this.state.article.id;
-            axios.delete(`http://127.0.0.1:8000/api/${articleID}/`);
+            axios.delete(`http://${process.env.REACT_APP_API_HOST}:8000/api/${articleID}/`);
             this.props.history.push('/');
             this.forceUpdate();
         } else {

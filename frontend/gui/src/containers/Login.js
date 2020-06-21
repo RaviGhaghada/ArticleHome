@@ -29,13 +29,11 @@ class NormalLoginForm extends React.Component {
     render() {
         let errorMessage = null;
         if (this.props.error) {
-            errorMessage = (
-                <p>{this.props.error.message}</p>
-            );
+            message.destroy()
+            message.error((<div>{this.props.error.message}<br />{this.props.error.response.data[0]}</div>));
         }
         return (
             <div>
-                {errorMessage}
                 {
                     this.props.loading ?
 

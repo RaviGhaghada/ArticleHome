@@ -12,41 +12,36 @@ class LikeButton extends React.Component {
             liked: false
         }
     }
+
+    liked(articleID) {
+        axios.get(`http://${process.env.REACT_APP_API_HOST}:8000/api/${articleID}/liked/`)
+            .then(res => {
+                console.log(res.data)
+                this.setState({
+                    liked: res.data
+                })
+            })
+            .catch(err => {
+                console.log(err.response);
+            })
+    }
+
     componentDidMount() {
         if (this.props.token && this.props.articleID) {
-            axios.get(`http://127.0.0.1:8000/api/${this.props.articleID}/liked/`)
-                .then(res => {
-                    console.log(res.data)
-                    this.setState({
-                        liked: res.data
-                    })
-                })
-                .catch(err => {
-                    console.log(err.response);
-                })
+            this.liked(this.props.articleID);
         }
 
     }
     componentWillReceiveProps(newProps) {
         if (newProps.token && newProps.articleID) {
-            axios.get(`http://127.0.0.1:8000/api/${newProps.articleID}/liked/`)
-                .then(res => {
-                    console.log(res.data)
-                    this.setState({
-                        liked: res.data
-                    })
-                })
-                .catch(err => {
-                    console.log(err.response);
-                })
+            this.liked(newProps.articleID);
         }
-
     }
 
 
     toggleLike() {
         if (this.props.token !== null) {
-            axios.post(`http://127.0.0.1:8000/api/${this.props.articleID}/togglelike/`).then(res => {
+            axios.post(`http://${process.env.REACT_APP_API_HOST}/api/${this.props.articleID}/togglelike/`).then(res => {
                 this.setState({
                     liked: !this.state.liked
                 })

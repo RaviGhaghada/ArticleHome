@@ -28,7 +28,7 @@ class ArticleList extends React.Component {
     }
 
     componentWillMount() {
-        axios.get('http://127.0.0.1:8000/api/')
+        axios.get(`http://${process.env.REACT_APP_API_HOST}/api/`)
             .then(res => {
                 this.setState({
                     articles: res.data

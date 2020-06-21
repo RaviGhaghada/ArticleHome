@@ -14,7 +14,6 @@ class RegistrationForm extends React.Component {
 
     handleFinish(values) {
         this.props.onAuth(values.username, values.email, values.password, values.confirm);
-        this.props.history.push('/');
     }
 
     handleConfirmBlur = (e) => {
@@ -35,9 +34,16 @@ class RegistrationForm extends React.Component {
         if (this.props.token) {
             this.props.history.push('/');
         }
+        var errors = null;
+        if (this.props.error) {
+            errors = (
+                <p>{this.props.error.message}</p>
+            )
+        }
         return (
-            <Form onFinish={this.handleFinish.bind(this)}>
 
+            <Form onFinish={this.handleFinish.bind(this)}>
+                {errors}
                 <FormItem name="username" label="Username" rules={[{ required: true, message: 'Please input your Username!' }]}>
                     <Input prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
                 </FormItem>
@@ -57,7 +63,7 @@ class RegistrationForm extends React.Component {
 
                 </FormItem>
 
-                <FormItem name="password" label="Password" rules={[{ required: true, message: 'Please input your password!' },]} hasFeedback>
+                <FormItem name="password" label="Password" rules={[{ required: true, message: 'Please input your password!' }, { min: 8, message: 'Password must be atleast 8 characters' }]} hasFeedback>
                     <Input prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
                 </FormItem>
 

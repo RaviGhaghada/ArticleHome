@@ -17,7 +17,7 @@ class CustomForm extends React.Component {
         if (this.props.token !== null) {
             switch (requestType) {
                 case 'post':
-                    await axios.post('http://127.0.0.1:8000/api/', {
+                    await axios.post(`http://${process.env.REACT_APP_API_HOST}/api/`, {
                         title: title,
                         description: description,
                         content: content
@@ -27,7 +27,7 @@ class CustomForm extends React.Component {
                     }).catch(err => console.log(err));
                     break;
                 case 'put':
-                    await axios.put(`http://127.0.0.1:8000/api/${articleID}/`, {
+                    await axios.put(`http://${process.env.REACT_APP_API_HOST}/api/${articleID}/`, {
                         title: title,
                         description: description,
                         content: content

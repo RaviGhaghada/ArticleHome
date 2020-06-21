@@ -1,6 +1,5 @@
 import React from 'react';
 import { List, Avatar, Space } from 'antd';
-import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import LikeButton from './LikeButton';
 
 
