@@ -21,7 +21,7 @@ class CustomLayout extends React.Component {
             <Layout className="layout">
                 <Header>
                     <div className="logo" />
-                    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
+                    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
                         {
                             this.props.isAuthenticated ?
                                 <Menu.Item key="2" onClick={this.props.logout}>
