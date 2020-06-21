@@ -19,7 +19,7 @@ class ArticleDetail extends React.Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const articleID = this.props.match.params.articleID;
         axios.get(`http://${process.env.REACT_APP_API_HOST}/api/${articleID}/`)
             .then(res => {

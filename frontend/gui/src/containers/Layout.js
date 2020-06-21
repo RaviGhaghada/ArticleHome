@@ -15,6 +15,10 @@ class CustomLayout extends React.Component {
         super(props);
 
     }
+
+    handleLogout() {
+        this.props.logout()
+    }
     render() {
 
         return (
@@ -24,7 +28,7 @@ class CustomLayout extends React.Component {
                     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
                         {
                             this.props.isAuthenticated ?
-                                <Menu.Item key="2" onClick={this.props.logout}>
+                                <Menu.Item key="2" onClick={this.handleLogout.bind(this)}>
                                     Logout
                             </Menu.Item>
                                 :
