@@ -32,7 +32,8 @@ class CustomForm extends React.Component {
                         description: description,
                         content: content
                     }).then(res => {
-
+                        this.props.history.push('/');
+                        this.forceUpdate();
                     }).catch(err => console.log(err));
                     break;
             }
