@@ -6,6 +6,7 @@ import { Card, Button, message } from 'antd';
 import CustomForm from './../components/Form'
 
 import { LikeOutlined } from '@ant-design/icons';
+import LikeButton from '../components/LikeButton';
 
 class ArticleDetail extends React.Component {
 
@@ -25,21 +26,6 @@ class ArticleDetail extends React.Component {
                 this.setState({
                     article: res.data
                 });
-            })
-            .then(() => {
-                console.log(this.props.token);
-                if (this.props.token !== null) {
-                    axios.get(`http://127.0.0.1:8000/api/${articleID}/liked/`)
-                        .then(res => {
-                            console.log(res.data)
-                            this.setState({
-                                liked: res.data
-                            })
-                        })
-                        .catch(err => {
-                            console.log(err.response);
-                        })
-                }
             });
     }
 
@@ -60,43 +46,17 @@ class ArticleDetail extends React.Component {
 
     }
 
-    toggleLike() {
-        if (this.props.token !== null) {
-            const articleID = this.state.article.id;
-            axios.post(`http://127.0.0.1:8000/api/${articleID}/togglelike/`).then(res => {
-                this.setState({
-                    liked: !this.state.liked
-                })
-            }).catch(err => {
-                console.log(err);
-            });
-        } else {
-            message.destroy()
-            message.error("Not logged in");
-        }
-    }
     render() {
-        const Like = (
-            <div>
-                <Button onClick={this.toggleLike.bind(this)} icon={<LikeOutlined />}>
-                    {this.state.liked ?
-                        "Like?"
-                        :
-                        "Liked!"
-                    }
-                </Button>
-            </div>
-        )
-        const Title = (
-            <div>
-                <div style={{ float: "left" }}>{this.state.article.title}</div>
-                <div style={{ float: "right" }}>{Like}</div>
-            </div>
-        );
+
 
         return (
             <div>
-                <Card title={Title}>
+                <Card title={(
+                    <div>
+                        <div style={{ float: "left" }}>{this.state.article.title}</div>
+                        <div style={{ float: "right" }}><LikeButton articleID={this.state.article.id} /></div>
+                    </div>
+                )}>
                     <p>{this.state.article.content}</p>
                 </Card >
                 <hr />
@@ -105,6 +65,7 @@ class ArticleDetail extends React.Component {
                 <form onSubmit={this.handleDelete.bind(this)}>
                     <Button type='danger' htmlType="submit">Delete</Button>
                 </form>
+
             </div >
         );
     }

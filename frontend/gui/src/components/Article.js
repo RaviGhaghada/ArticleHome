@@ -1,6 +1,7 @@
 import React from 'react';
 import { List, Avatar, Space } from 'antd';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
+import LikeButton from './LikeButton';
 
 
 const IconText = ({ icon, text }) => (
@@ -26,9 +27,7 @@ const Articles = (props) => {
                 <List.Item
                     key={item.title}
                     actions={[
-                        <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
-                        <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
-                        <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
+                        <LikeButton articleID={item.id} />,
                     ]}
                     extra={
                         <img
