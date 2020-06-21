@@ -21,14 +21,19 @@ class CustomForm extends React.Component {
                         title: title,
                         description: description,
                         content: content
-                    }).then(res => console.log(res)).catch(err => console.log(err));
+                    }).then(res => {
+                        this.history.push('/');
+                        this.forceUpdate();
+                    }).catch(err => console.log(err));
                     break;
                 case 'put':
                     await axios.put(`http://127.0.0.1:8000/api/${articleID}/`, {
                         title: title,
                         description: description,
                         content: content
-                    }).then(res => console.log(res)).catch(err => console.log(err));
+                    }).then(res => {
+
+                    }).catch(err => console.log(err));
                     break;
             }
         }
