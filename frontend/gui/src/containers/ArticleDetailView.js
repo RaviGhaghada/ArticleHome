@@ -36,7 +36,7 @@ class ArticleDetail extends React.Component {
 
         if (this.props.token !== null) {
             const articleID = this.state.article.id;
-            axios.delete(`http://${process.env.REACT_APP_API_HOST}:8000/api/${articleID}/`);
+            axios.delete(`http://${process.env.REACT_APP_API_HOST}/api/${articleID}/`);
             this.props.history.push('/');
             this.forceUpdate();
         } else {

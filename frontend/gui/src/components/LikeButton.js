@@ -9,33 +9,42 @@ class LikeButton extends React.Component {
         super(props);
 
         this.state = {
-            liked: false
+            liked: false,
+            likes: 0
         }
     }
 
-    liked(articleID) {
-        axios.get(`http://${process.env.REACT_APP_API_HOST}:8000/api/${articleID}/liked/`)
-            .then(res => {
-                console.log(res.data)
-                this.setState({
-                    liked: res.data
+    getLikeDetail(props) {
+        if (props.token && props.articleID) {
+            axios.get(`http://${process.env.REACT_APP_API_HOST}/api/${props.articleID}/liked/`)
+                .then(res => {
+                    this.setState({
+                        liked: res.data
+                    })
                 })
+                .catch(err => {
+                    console.log(err.response);
+                });
+        }
+
+        axios.get(`http://${process.env.REACT_APP_API_HOST}/api/${props.articleID}/likes/`)
+            .then(res => {
+                this.setState({
+                    likes: res.data
+                });
             })
             .catch(err => {
-                console.log(err.response);
-            })
+                console.log(err);
+            });
+
     }
+
 
     componentDidMount() {
-        if (this.props.token && this.props.articleID) {
-            this.liked(this.props.articleID);
-        }
-
+        this.getLikeDetail(this.props);
     }
     componentWillReceiveProps(newProps) {
-        if (newProps.token && newProps.articleID) {
-            this.liked(newProps.articleID);
-        }
+        this.getLikeDetail(newProps);
     }
 
 
@@ -56,14 +65,15 @@ class LikeButton extends React.Component {
 
 
     render() {
-        console.log(this.props);
+
         return (
             <Button onClick={this.toggleLike.bind(this)} icon={<LikeOutlined />}>
-                {!this.state.liked ?
-                    "Like?"
+                {this.state.liked ?
+                    `You and `
                     :
-                    "Liked!"
+                    ''
                 }
+                {`${this.state.likes - 1} people like this`}
             </Button>
         );
     }
